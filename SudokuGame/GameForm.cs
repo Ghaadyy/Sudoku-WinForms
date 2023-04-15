@@ -5,24 +5,24 @@ namespace SudokuGame
 {
     public partial class GameForm : Form
     {
-        public SudokuGame game;
-        public Player player;
+        private SudokuGame game;
+        private Player player;
         private SudokuForm mainScreen;
 
         private int[,]? solvedBoard;
         private int level;
 
-        public int[] boxesToReveal = { 37, 32, 26 };
-        public int[] maxTime = { 10, 15, 20 };
-        public int[] maxHints = { 3, 5, 11 };
-        public double[] hintCost = { 0.5, 1, 4 };
-        public int[] gameCost = { 1, 2, 3 };
-        public int[] prize = { 10, 15, 20 };
+        private int[] boxesToReveal = { 37, 32, 26 };
+        private int[] maxTime = { 10, 15, 20 };
+        private int[] maxHints = { 3, 5, 11 };
+        private double[] hintCost = { 0.5, 1, 4 };
+        private int[] gameCost = { 1, 2, 3 };
+        private int[] prize = { 10, 15, 20 };
 
-        public int allowedHints;
+        private int allowedHints;
 
-        public int remainingTime;
-        public bool allowedHint = false;
+        private int remainingTime;
+        private bool allowedHint = false;
 
         public GameForm(int level, Player player, SudokuForm sudokuForm)
         {
@@ -50,6 +50,7 @@ namespace SudokuGame
         private void GameForm_Load(object sender, EventArgs e)
         {
             requestHint.Enabled = false;
+            requestHint.Text = $"Get Hint (${hintCost[level]})";
             int x = 210, y = 74;
 
             int size = 31;
@@ -65,6 +66,7 @@ namespace SudokuGame
                     text.Text = game.board[i, j] == 0 ? "" : $"{game.board[i, j]}";
                     text.Name = "box" + counter;
                     text.TextChanged += new EventHandler(textChanged);
+                    text.KeyPress += keyPressHandler;
                     counter++;
                     if (game.board[i, j] == 0)
                     {
@@ -94,7 +96,7 @@ namespace SudokuGame
                 x = 210;
             }
 
-            timeRemaining.Text = $"{this.maxTime[level]}:00";
+            timeRemaining.Text = $"{this.maxTime[level].ToString("00")}:{0.ToString("00")}";
             timer1.Start();
         }
 
@@ -107,7 +109,7 @@ namespace SudokuGame
         {
             this.remainingTime--;
             TimeSpan ts = TimeSpan.FromSeconds(this.remainingTime);
-            timeRemaining.Text = $"{ts.Minutes}:{ts.Seconds}";
+            timeRemaining.Text = $"{ts.Minutes.ToString("00")}:{ts.Seconds.ToString("00")}";
 
             if (this.remainingTime == 0)
             {
@@ -202,46 +204,23 @@ namespace SudokuGame
             }
         }
 
+        private void keyPressHandler(object? sender, KeyPressEventArgs e)
+        {
+            TextBox? box = (TextBox?)sender;
+
+            if ((!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar)) || (box?.Text.Length >= 1 && !char.IsControl(e.KeyChar)) || (e.KeyChar == '0'))
+            {
+                e.Handled = true;
+                return;
+            }
+        }
+
         private void textChanged(object? sender, EventArgs? e)
         {
             if (this.allowedHints > 0)
             {
                 this.allowedHint = true;
                 requestHint.Enabled = true;
-            }
-
-            try
-            {
-                TextBox boxTrigger = (TextBox)sender;
-                int.Parse(boxTrigger.Text);
-                boxTrigger.BackColor = Color.White;
-            }
-            catch
-            {
-                TextBox boxTrigger = (TextBox)sender;
-                boxTrigger.BackColor = Color.Red;
-                return;
-            }
-
-            int counter = 1;
-
-            for (int i = 0; i < game.board.GetLength(0); i++)
-            {
-                for (int j = 0; j < game.board.GetLength(1); j++)
-                {
-                    TextBox box = (TextBox)this.Controls[$"box{counter}"];
-                    TextBox boxTrigger = (TextBox)sender;
-
-                    if (boxTrigger.Text == box.Text)
-                    {
-                        boxTrigger.BackColor = Color.Red;
-                    }
-                    else
-                    {
-                        boxTrigger.BackColor = Color.White;
-                    }
-                    counter++;
-                }
             }
         }
 

@@ -128,7 +128,7 @@
             this.Controls.Add(this.quitGame);
             this.ForeColor = System.Drawing.Color.Black;
             this.Name = "GameForm";
-            this.Text = "GameForm";
+            this.Text = "Game";
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

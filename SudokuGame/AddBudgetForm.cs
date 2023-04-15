@@ -4,8 +4,8 @@ namespace SudokuGame
 {
     public partial class AddBudgetForm : Form
     {
-        public Player player;
-        public SudokuForm mainScreen;
+        private Player player;
+        private SudokuForm mainScreen;
         public AddBudgetForm(Player player, SudokuForm sudokuForm)
         {
             this.player = player;

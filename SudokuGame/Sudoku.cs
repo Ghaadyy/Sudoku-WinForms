@@ -8,14 +8,14 @@ namespace SudokuGame
 
         public Sudoku(int[,] board)
         {
-            this.board = CopyBoard(board);
-            //if (Sudoku.IsValidSudoku(board))
-            //{
-            //}
-            //else
-            //{
-            //    throw new Exception("Invalid Sudoku board, please check your input");
-            //}
+            if (Sudoku.IsValidSudoku(board))
+            {
+                this.board = CopyBoard(board);
+            }
+            else
+            {
+                throw new Exception("Invalid Sudoku board, please check your input");
+            }
         }
 
         public static int[,] generateSudoku(int boxesToReveal)

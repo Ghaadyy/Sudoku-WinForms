@@ -80,7 +80,7 @@
             this.Controls.Add(this.budgetBox);
             this.Controls.Add(this.label1);
             this.Name = "AddBudgetForm";
-            this.Text = "AddBudgetForm";
+            this.Text = "Add Budget";
             this.ResumeLayout(false);
             this.PerformLayout();
 
