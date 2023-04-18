@@ -8,7 +8,7 @@ This is a Sudoku Game built with Windows Forms in C#, it was an assignment in In
 
 - Creates a random sudoku board for the player to solve
 - Features multiple levels of difficulty
-- Keeps track of balance (depending on wether the player won or lost the game)
+- Keeps track of balance (depending on whether the player won or lost the game)
 - Give out hints on request
 
 ### My Implementation
